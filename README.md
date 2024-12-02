@@ -38,3 +38,12 @@ Also, I used query parameters that are used in the controllers. With that, the s
 6. Run the following command and keep always executing: `npm run dev`
 
 7. In order to create events every 5 minutes, also run and keep executing the following command: `vendor/bin/sail php artisan schedule:work`
+
+## How to navigate
+
+Once the app is ready, just access http://localhost.
+
+You should register your user, and start using the application.
+
+`/sw-starter` is the main page
+`/api/sw-starter/statistics` is the open endpoint to find the statistics
