@@ -8,6 +8,7 @@ import Results from "./Partials/Results";
 export default function Index({ resultData = [], search, resultType }) {
     const [searchType, setSearchType] = useState(resultType ?? "");
     const [searchText, setSearchText] = useState(search ?? "");
+    const [result, setResult] = useState(resultData);
     const [loadingData, setLoadingData] = useState(false);
 
     const inputHandler = (event) => {
@@ -23,6 +24,11 @@ export default function Index({ resultData = [], search, resultType }) {
             });
         }
         search();
+    };
+
+    const setSearchTypeHandler = (type) => {
+        setSearchType(type);
+        setResult([]);
     };
 
     return (
@@ -47,8 +53,10 @@ export default function Index({ resultData = [], search, resultType }) {
                                     <div className="flex inline-flex items-center">
                                         <div className="m-4">
                                             <input
-                                                onChange={(e) =>
-                                                    setSearchType("people")
+                                                onChange={() =>
+                                                    setSearchTypeHandler(
+                                                        "people"
+                                                    )
                                                 }
                                                 checked={
                                                     searchType === "people"
@@ -67,8 +75,10 @@ export default function Index({ resultData = [], search, resultType }) {
                                         </div>
                                         <div className="flex items-center">
                                             <input
-                                                onChange={(e) =>
-                                                    setSearchType("films")
+                                                onChange={() =>
+                                                    setSearchTypeHandler(
+                                                        "films"
+                                                    )
                                                 }
                                                 checked={searchType === "films"}
                                                 id="default-radio-2"
@@ -117,7 +127,7 @@ export default function Index({ resultData = [], search, resultType }) {
 
                     <Results
                         loadingData={loadingData}
-                        resultData={resultData}
+                        resultData={result}
                         searchType={searchType}
                     ></Results>
                 </div>

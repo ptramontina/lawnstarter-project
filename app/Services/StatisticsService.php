@@ -34,7 +34,7 @@ class StatisticsService
                     'search_text',
                     DB::raw('max(type) as type'),
                     DB::raw('count(search_text) as total'),
-                    DB::raw("round(count(search_text)/$max*100, 2) as avg")
+                    DB::raw("round(count(search_text)/$max*100) as avg")
                 )
                 ->orderBy('total', 'desc')
                 ->limit(5)
@@ -43,6 +43,7 @@ class StatisticsService
             $durationAverage = Search::query()
                 ->groupBy('search_text')->select(
                     'search_text',
+                    DB::raw('max(type) as type'),
                     DB::raw('round(avg(duration), 2) as avg_duration')
                 )
                 ->orderBy('avg_duration', 'desc')->get();
