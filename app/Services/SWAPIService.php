@@ -21,7 +21,7 @@ class SWAPIService
             return $cacheData;
         }
 
-        $response = Http::get("https://swapi.dev/api/$type?search=$search");
+        $response = Http::get(config('swapi.baseurl') . "$type?search=$search");
 
         $response = json_decode($response->body());
 
