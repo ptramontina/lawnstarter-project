@@ -15,6 +15,12 @@ class SWAPIService
     /**
      * Receives a type and make the search in the SWApi.
      * 
+     * IMPORTANT: swapi.dev does not provide the id of the model. Only swapi.tech.
+     * But due to the issue I mentioned on the Readme, I used this one, so, I had 
+     * to parse the ID from the URL.
+     * 
+     * @param string $type the type to search
+     * @param string $search the text to search
      * @return Collection
      */
     public function search(string $type, string $search): Collection

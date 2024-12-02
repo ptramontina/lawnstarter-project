@@ -15,7 +15,7 @@ export default function List({ list, type }) {
                                 href="sw-starter/show"
                                 data={{ type, id: item.id }}
                             >
-                                <PrimaryButton>Details</PrimaryButton>
+                                <PrimaryButton>See Details</PrimaryButton>
                             </Link>
                         </div>
                     </div>
