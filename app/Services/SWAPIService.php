@@ -7,6 +7,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
+/**
+ * This service manages all requests made to SWApi.
+ */
 class SWAPIService
 {
     /**

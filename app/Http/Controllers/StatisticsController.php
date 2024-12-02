@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class StatisticsController extends Controller
 {
+    /**
+     * Public API to show statistics
+     */
     public function apiIndex(Request $request)
     {
         $statisticsService = new StatisticsService();

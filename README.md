@@ -17,6 +17,8 @@ Then, the endpoint (which I made public) will just get the information from the 
 
 Note that the environment is set to be `sync` for simplicity. We could put also in a redis, or even database.
 
+A middleware was used to store the searches that happens on each request.
+
 I also implemented mocks #5 and #6 to show movies and people.
 
 Besides that, I used a cache to store the retrieved information from the API, and run it faster in the same next requests.
@@ -33,11 +35,13 @@ Also, I used query parameters that are used in the controllers. With that, the s
 
 4. Afther that, use Sail to build and start the main app: `vendor/bin/sail up`
 
-5. Keep `sail up` always executing, and in another terminal, run the migrations: `vendor/bin/sail php artisan migrate`
+5. Run the app encrypt: `vendor/bin/sail php artisan key:generate`
 
-6. Run the following command and keep always executing: `npm run dev`
+6. Keep `sail up` always executing, and in another terminal, run the migrations: `vendor/bin/sail php artisan migrate`
 
-7. In order to create events every 5 minutes, also run and keep executing the following command: `vendor/bin/sail php artisan schedule:work`
+7. Run the following command and keep always executing: `npm run dev`
+
+8. In order to create events every 5 minutes, also run and keep executing the following command: `vendor/bin/sail php artisan schedule:work`
 
 ## How to navigate
 

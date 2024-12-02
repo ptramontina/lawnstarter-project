@@ -12,7 +12,8 @@ use App\Models\Search;
 class StatisticsRegister
 {
     /**
-     * Handle an incoming request.
+     * This middleware registers all searches that happens 
+     * If it fails, it just logs the error so it does not affect system usage.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */

@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Services\SWAPIService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Illuminate\Http\Client\Pool;
-use Illuminate\Support\Facades\Http;
 
 class SWStarterController extends Controller
 {
+    /**
+     * Index page for SWStarter
+     */
     public function index(Request $request)
     {
         $search = $request->query('search') ?? '';
@@ -28,6 +29,9 @@ class SWStarterController extends Controller
         ]);
     }
 
+    /**
+     * Show page for SWStarter
+     */
     public function show(Request $request)
     {
         $url = $request->query('url');
