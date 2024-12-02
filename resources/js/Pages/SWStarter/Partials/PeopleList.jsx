@@ -3,10 +3,10 @@ import { Link } from "@inertiajs/react";
 export default function PeopleList({ details, type }) {
     const list = details.films?.map((film) => {
         return (
-            <span key={film.url} className="mx-px hover:underline">
+            <span key={film.id} className="mx-px hover:underline">
                 <Link
                     href="/sw-starter/show"
-                    data={{ type: "films", url: film.url }}
+                    data={{ type: "films", id: film.id }}
                 >
                     {film.title},
                 </Link>

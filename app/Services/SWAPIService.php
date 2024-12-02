@@ -36,6 +36,11 @@ class SWAPIService
             $resultData = $resultData->merge(collect($response->results));
         }
 
+        $resultData = $resultData->map(function ($result) {
+            $result->id = $this->parseIdFromUrl($result->url);
+            return $result;
+        });
+
         Cache::set($type . $search, $resultData, 300);
 
         return $resultData;
@@ -52,14 +57,14 @@ class SWAPIService
      * @param string $url The url to get the object from
      * @return object
      */
-    public function getSWModel(string $type, string $url): object
+    public function getSWModel(string $type, string $id): object
     {
-        $cacheData = Cache::get($cacheKey = $type . $url);
+        $cacheData = Cache::get($cacheKey = $type . $id);
         if ($cacheData) {
             return $cacheData;
         }
 
-        $response = Http::get($url);
+        $response = Http::get(config('swapi.baseurl') . "$type/$id");
 
         $swModel = json_decode($response->body());
 
@@ -71,7 +76,9 @@ class SWAPIService
                     $pool->get($characterUrl);
                 }
             }))->map(function ($swModel) {
-                return json_decode($swModel->body());
+                $character = json_decode($swModel->body());
+                $character->id = $this->parseIdFromUrl($character->url);
+                return $character;
             });
 
             $swModel->characters = $characters;
@@ -82,7 +89,9 @@ class SWAPIService
                     $pool->get($filmUrl);
                 }
             }))->map(function ($swModel) {
-                return json_decode($swModel->body());
+                $film = json_decode($swModel->body());
+                $film->id = $this->parseIdFromUrl($film->url);
+                return $film;
             });
 
             $swModel->films = $films;
@@ -91,5 +100,23 @@ class SWAPIService
         Cache::set($cacheKey, $swModel, 300);
 
         return $swModel;
+    }
+
+    /**
+     * Gets URL and parse the id.
+     * Note that, swapi.dev does not provide the ID for the model.
+     * 
+     * In that case, I parsed it from the URL.
+     * 
+     * As mentioned in the Readme, the other version swapi.tech was not populating 
+     * the films in people resource.
+     * 
+     * @param $url string
+     * @return string
+     */
+    private function parseIdFromUrl(string $url): string
+    {
+        $parsedUrl = explode('/', $url);
+        return $parsedUrl[count($parsedUrl) - 2];
     }
 }

@@ -16,10 +16,10 @@ export default function MovieList({ details }) {
 
     const list = details.characters?.map((character) => {
         return (
-            <span key={character.url} className="mx-px hover:underline">
+            <span key={character.id} className="mx-px hover:underline">
                 <Link
                     href="/sw-starter/show"
-                    data={{ type: "people", url: character.url }}
+                    data={{ type: "people", id: character.id }}
                 >
                     {character.name},
                 </Link>

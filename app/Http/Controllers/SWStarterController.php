@@ -34,11 +34,11 @@ class SWStarterController extends Controller
      */
     public function show(Request $request)
     {
-        $url = $request->query('url');
+        $id = $request->query('id');
         $type = $request->query('type') ?? 'people';
 
         $swapiService = new SWAPIService();
-        $response = $swapiService->getSWModel($type, $url);
+        $response = $swapiService->getSWModel($type, $id);
 
         return Inertia::render('SWStarter/Show', [
             'details' => $response,

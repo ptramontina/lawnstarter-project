@@ -5,7 +5,7 @@ export default function List({ list, type }) {
     return (
         <div className="m-2">
             {list.map((item) => (
-                <div key={item.url}>
+                <div key={item.id}>
                     <div className="grid grid-cols-2 m-2">
                         <div className="mt-1">
                             {type === "films" ? item.title : item.name}
@@ -13,7 +13,7 @@ export default function List({ list, type }) {
                         <div className="text-right">
                             <Link
                                 href="sw-starter/show"
-                                data={{ type, url: item.url }}
+                                data={{ type, id: item.id }}
                             >
                                 <PrimaryButton>Details</PrimaryButton>
                             </Link>
@@ -23,16 +23,5 @@ export default function List({ list, type }) {
                 </div>
             ))}
         </div>
-        // {{item.url}
-        // <p className="">{item.name}</p>
-        // <p className="">
-        //     <Link
-        //         href="sw-starter/show"
-        //         data={{ type, url: item.url }}
-        //     >
-        //         <PrimaryButton>Details</PrimaryButton>
-        //         Details
-        //     </Link>
-        // </p>}
     );
 }
