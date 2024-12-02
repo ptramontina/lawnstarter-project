@@ -39,7 +39,7 @@ export default function Index({ resultData = [], search, resultType }) {
                 <div className="grid grid-cols-9">
                     <div className="col-start-2 col-span-3">
                         <div className="max-w-7xl sm:px-6 lg:px-8">
-                            <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                            <div className="overflow-hidden bg-white shadow rounded">
                                 <div className="p-6 text-gray-900">
                                     <div className="text-xl font-bold m-3">
                                         What are you searching for?
