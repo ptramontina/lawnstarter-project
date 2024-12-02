@@ -11,7 +11,7 @@ And the environment was set using Laravel Sail.
 
 ## Some important notes about the implementation
 
-I was facing some slowness using the `swapi.dev` even though it was working as expected. I saw there's another version, called `swapi.tech`, which has more resources, and seems faster. However, when I tried to `get people` with the `tech` version, it didn't return the `films` property (different from the films, which returned `characters`, which seems like a bug). Because of that, I still used `swapi.dev`. Documentation says that each request makes the next slower, so, sometimes, it times out.
+I was facing some slowness using the `swapi.dev` even though it was working as expected. I saw there's another version, called `swapi.tech`, which has more resources, and seems faster. However, when I tried to [`get people/id`](https://swapi.tech/api/people/1) with the `tech` version, it didn't return the `films` property (different from the films, which returned `characters`, which seems like a bug). Because of that, I still used `swapi.dev`. Documentation says that each request makes the next slower, so, sometimes, it times out.
 
 In order to make the event/queue, I used a cron that runs every five minutes which will dispatch a job to the queue.
 This job will perform the statistics of the code, and will store in a cache.
