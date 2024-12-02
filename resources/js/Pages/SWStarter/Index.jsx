@@ -3,7 +3,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, router } from "@inertiajs/react";
 import { useState } from "react";
-import Results from "./Results";
+import Results from "./Partials/Results";
 
 export default function Index({ resultData = [], search, resultType }) {
     const [searchType, setSearchType] = useState(resultType ?? "");
@@ -60,7 +60,7 @@ export default function Index({ resultData = [], search, resultType }) {
                                             />
                                             <label
                                                 htmlFor="default-radio-1"
-                                                className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                                className="ms-2 text-sm font-semibold text-gray-900 dark:text-gray-300"
                                             >
                                                 People
                                             </label>
@@ -78,7 +78,7 @@ export default function Index({ resultData = [], search, resultType }) {
                                             />
                                             <label
                                                 htmlFor="default-radio-2"
-                                                className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                                className="ms-2 text-sm font-semibold text-gray-900 dark:text-gray-300"
                                             >
                                                 Movies
                                             </label>

@@ -1,3 +1,4 @@
+import FullBox from "./FullBox";
 import List from "./List";
 
 export default function Results({ loadingData, resultData, searchType }) {
@@ -9,24 +10,15 @@ export default function Results({ loadingData, resultData, searchType }) {
                         <div className="text-2xl font-bold m-3">Results</div>
                         <hr></hr>
 
-                        {loadingData && (
-                            <div className="flex h-96">
-                                <div className="m-auto font-bold text-center text-gray-400 text-xl">
-                                    <div>Searching...</div>
-                                </div>
-                            </div>
-                        )}
+                        {loadingData && <FullBox>Searching...</FullBox>}
 
                         {!loadingData && !resultData.length && (
-                            <div className="flex h-96">
-                                <div className="m-auto font-bold text-center text-gray-400 text-xl">
-                                    <div>There are zero matches</div>
-                                    <div>
-                                        Use the form to search for People or
-                                        Movies
-                                    </div>
+                            <FullBox>
+                                <div>There are zero matches</div>
+                                <div>
+                                    Use the form to search for People or Movies
                                 </div>
-                            </div>
+                            </FullBox>
                         )}
 
                         {!loadingData && !!resultData.length && (

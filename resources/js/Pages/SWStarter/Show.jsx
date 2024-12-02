@@ -1,7 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
-import PeopleList from "./PeopleList";
-import MovieList from "./MovieList";
+import PeopleList from "./Partials/PeopleList";
+import MovieList from "./Partials/MovieList";
 import PrimaryButton from "@/Components/PrimaryButton";
 
 export default function Show({ details, type }) {
