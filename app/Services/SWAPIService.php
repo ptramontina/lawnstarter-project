@@ -47,14 +47,13 @@ class SWAPIService
     }
 
     /**
-     * This method receives a type and an url to get a SW model (people or film).
-     * I thought it would be better to use the url directly, since the API does not provide
-     * the ID in the object response.
-     * With that, if I were to use the ID, I would have to make an extra loop after the requests
-     * finished (in the search method above), and parse the URL to get the ID.
+     * This method receives a type and an id to get a SW model (people or film).
+     * IMPORTANT: swapi.dev does not provide the id of the model. Only swapi.tech.
+     * But due to the issue I mentioned on the Readme, I used this one, so, I had 
+     * to parse the ID from the URL.
      * 
      * @param string $type Type of the object, in this case either 'people' or 'movies'
-     * @param string $url The url to get the object from
+     * @param string $id The id of the object
      * @return object
      */
     public function getSWModel(string $type, string $id): object
