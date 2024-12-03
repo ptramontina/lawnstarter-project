@@ -5,9 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
-use App\Models\Search;
+use App\Services\StatisticsService;
 
 class StatisticsRegister
 {
@@ -27,22 +26,9 @@ class StatisticsRegister
         $response = $next($request);
 
         if ($shouldSaveStatistic) {
-            try {
-                $end = Carbon::now();
-                $differenceInMilliseconds = $start->diffInMilliseconds($end);
-                $search = $request->query('search');
-                $type = $request->query('type') ?? 'people';
-
-                Search::create([
-                    'search_text' => $search,
-                    'type' => $type == 'films' ? 'movies' : $type,
-                    'request_start' => $start,
-                    'request_end' => $end,
-                    'duration' => $differenceInMilliseconds,
-                ]);
-            } catch (\Exception $error) {
-                Log::error('Error while storing statistic: ' . $error->getMessage());
-            }
+            $end = Carbon::now();
+            $statisticService = new StatisticsService();
+            $statisticService->setStatistic($start, $end, $request->query('search'), $request->query('type'));
         }
 
         return $response;
