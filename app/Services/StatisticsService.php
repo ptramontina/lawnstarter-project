@@ -6,6 +6,8 @@ use App\Models\Search;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Collection;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 /**
  * This service manages the processing of the statistics.
@@ -30,7 +32,7 @@ class StatisticsService
          */
         if ($max) {
             $mostCommonSearches = Search::query()
-                ->groupBy('search_text')->select(
+                ->groupBy('search_text', 'type')->select(
                     'search_text',
                     DB::raw('max(type) as type'),
                     DB::raw('count(search_text) as total'),
@@ -71,5 +73,25 @@ class StatisticsService
     public function getStatistics(): Collection
     {
         return Cache::get('statistics') ?? collect([]);
+    }
+
+    /**
+     * Save a statistic model
+     */
+    public function setStatistic(Carbon $start, Carbon $end, string $search, string $type = 'people'): void
+    {
+        try {
+            $differenceInMilliseconds = $start->diffInMilliseconds($end);
+
+            Search::create([
+                'search_text' => $search,
+                'type' => $type == 'films' ? 'movies' : $type,
+                'request_start' => $start,
+                'request_end' => $end,
+                'duration' => $differenceInMilliseconds,
+            ]);
+        } catch (\Exception $error) {
+            Log::error('Error while storing statistic: ' . $error->getMessage());
+        }
     }
 }
