@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Film;
+use App\Models\Person;
 use Illuminate\Http\Client\Pool;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -15,9 +17,6 @@ class SWAPIService
     /**
      * Receives a type and make the search in the SWApi.
      * 
-     * IMPORTANT: swapi.dev does not provide the id of the model. Only swapi.tech.
-     * But due to the issue I mentioned on the Readme, I used this one, so, I had 
-     * to parse the ID from the URL.
      * 
      * @param string $type the type to search
      * @param string $search the text to search
@@ -25,7 +24,7 @@ class SWAPIService
      */
     public function search(string $type, string $search): Collection
     {
-        $cacheData = Cache::get($type . $search);
+        $cacheData = Cache::get($cacheKey = $type . $search);
         if ($cacheData) {
             return $cacheData;
         }
@@ -42,27 +41,23 @@ class SWAPIService
             $resultData = $resultData->merge(collect($response->results));
         }
 
-        $resultData = $resultData->map(function ($result) {
-            $result->id = $this->parseIdFromUrl($result->url);
-            return $result;
+        $resultData = $resultData->map(function ($result) use ($type) {
+            return $this->getModelFromObject($result, $type)->toArray();
         });
 
-        Cache::set($type . $search, $resultData, 300);
+        Cache::set($cacheKey, $resultData, 300);
 
         return $resultData;
     }
 
     /**
      * This method receives a type and an id to get a SW model (people or film).
-     * IMPORTANT: swapi.dev does not provide the id of the model. Only swapi.tech.
-     * But due to the issue I mentioned on the Readme, I used this one, so, I had 
-     * to parse the ID from the URL.
      * 
      * @param string $type Type of the object, in this case either 'people' or 'movies'
      * @param string $id The id of the object
      * @return object
      */
-    public function getSWModel(string $type, string $id): object
+    public function getSWModel(string $type, string $id): Film|Person
     {
         $cacheData = Cache::get($cacheKey = $type . $id);
         if ($cacheData) {
@@ -70,37 +65,8 @@ class SWAPIService
         }
 
         $response = Http::get(config('swapi.baseurl') . "$type/$id");
-
         $swModel = json_decode($response->body());
-
-        //I used films internally so the code wouldn't have a lot of converts between films and movies.
-        if ($type === 'films') {
-            // Make all requests in paralel to improve performance
-            $characters = collect(Http::pool(function (Pool $pool) use ($swModel) {
-                foreach ($swModel->characters as $characterUrl) {
-                    $pool->get($characterUrl);
-                }
-            }))->map(function ($swModel) {
-                $character = json_decode($swModel->body());
-                $character->id = $this->parseIdFromUrl($character->url);
-                return $character;
-            });
-
-            $swModel->characters = $characters;
-        } else {
-            // Make all requests in paralel to improve performance
-            $films = collect(Http::pool(function (Pool $pool) use ($swModel) {
-                foreach ($swModel->films as $filmUrl) {
-                    $pool->get($filmUrl);
-                }
-            }))->map(function ($swModel) {
-                $film = json_decode($swModel->body());
-                $film->id = $this->parseIdFromUrl($film->url);
-                return $film;
-            });
-
-            $swModel->films = $films;
-        }
+        $swModel = $this->getModelFromObject($swModel, $type);
 
         Cache::set($cacheKey, $swModel, 300);
 
@@ -108,20 +74,31 @@ class SWAPIService
     }
 
     /**
-     * Gets URL and parse the id.
-     * Note that, swapi.dev does not provide the ID for the model.
+     * Receives a model from the API and transforms in a local model 
      * 
-     * In that case, I parsed it from the URL.
-     * 
-     * As mentioned in the Readme, the other version swapi.tech was not populating 
-     * the films in people resource.
-     * 
-     * @param $url string
-     * @return string
+     * @param object $swModel object from the API
+     * @param string $type film or people
+     * @return Film|Person
      */
-    private function parseIdFromUrl(string $url): string
+    private function getModelFromObject(object $swModel, string $type): Film|Person
     {
-        $parsedUrl = explode('/', $url);
-        return $parsedUrl[count($parsedUrl) - 2];
+        //I used films internally so the code wouldn't have a lot of converts between films and movies.
+        if ($type === 'films') {
+            // Make all requests in paralel to improve performance
+            return new Film($swModel->url, $swModel->title, $swModel->opening_crawl, $swModel->characters);
+        } else {
+            return new Person(
+                $swModel->url,
+                $swModel->name,
+                $swModel->height,
+                $swModel->mass,
+                $swModel->hair_color,
+                $swModel->skin_color,
+                $swModel->eye_color,
+                $swModel->birth_year,
+                $swModel->gender,
+                $swModel->films
+            );
+        }
     }
 }
