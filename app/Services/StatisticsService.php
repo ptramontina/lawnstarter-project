@@ -32,7 +32,7 @@ class StatisticsService
          */
         if ($max) {
             $mostCommonSearches = Search::query()
-                ->groupBy('search_text')->select(
+                ->groupBy('search_text', 'type')->select(
                     'search_text',
                     DB::raw('max(type) as type'),
                     DB::raw('count(search_text) as total'),
