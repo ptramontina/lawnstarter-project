@@ -38,10 +38,10 @@ class SWStarterController extends Controller
         $type = $request->query('type') ?? 'people';
 
         $swapiService = new SWAPIService();
-        $response = $swapiService->getSWModel($type, $id);
+        $swModel = $swapiService->getSWModel($type, $id);
 
         return Inertia::render('SWStarter/Show', [
-            'details' => $response,
+            'details' => $swModel->toArray(),
             'type' => $type
         ]);
     }
