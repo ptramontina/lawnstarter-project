@@ -1,8 +1,9 @@
-# LawnStarter Test
+# SWAPI Test
 
-Hello, my name is Pedro, and I did this test project for the LawnStarter interview process.
+Hello, my name is Pedro, and I did this test project for an interview process.
 
-Thank you for taking a look and for this opportunity. I hope you enjoy it!
+The idea was to show characters and movies from the SWAPI (https://swapi.dev/).
+Besides that I should insert data about what was searched on this APP, and have an event every five minutes to process this data.
 
 ## Stack
 
@@ -10,8 +11,6 @@ The stack used for this project was Laravel, React, Inertia and Tailwind.
 And the environment was set using Laravel Sail.
 
 ## Some important notes about the implementation
-
-I was facing some slowness using the `swapi.dev` even though it was working as expected. I saw there's another version, called `swapi.tech`, which has more resources, and seems faster. However, when I tried to [`get people/id`](https://swapi.tech/api/people/1) with the `tech` version, it didn't return the film property (different from the films, that returned [`characters`](https://swapi.tech/api/films/1), which seems like a bug). Because of that, I still used `swapi.dev`. Documentation says that each request makes the next slower, so, sometimes, it times out.
 
 In order to make the event/queue, I used a cron that runs every five minutes which will dispatch a job to the queue.
 This job will perform the statistics of the code, and will store in a cache.
